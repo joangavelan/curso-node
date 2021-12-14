@@ -65,9 +65,14 @@ const listadoTareasBorrar = async (tareas) => {
     };
   });
 
+  choices.push({
+    value: "0",
+    name: "0. Salir",
+  });
+
   const preguntas = [
     {
-      type: "list ",
+      type: "list",
       name: "id",
       message: "Borrar",
       choices,
@@ -79,9 +84,24 @@ const listadoTareasBorrar = async (tareas) => {
   return id;
 };
 
+const confirmar = async (message) => {
+  const question = [
+    {
+      type: "confirm",
+      name: "ok",
+      message,
+    },
+  ];
+
+  const { ok } = await inquirer.prompt(question);
+
+  return ok;
+};
+
 module.exports = {
   inquirerMenu,
   pausa,
   leerInput,
   listadoTareasBorrar,
+  confirmar,
 };

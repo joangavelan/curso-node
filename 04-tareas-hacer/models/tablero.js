@@ -49,8 +49,8 @@ class Tablero {
   }
 
   borrarTarea(id) {
-    if (this._listado[id]) {
-      delete this._listado[id];
+    if (this._tareas[id]) {
+      delete this._tareas[id];
     }
   }
 }

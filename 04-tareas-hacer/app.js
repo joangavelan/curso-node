@@ -6,6 +6,7 @@ const {
   pausa,
   leerInput,
   listadoTareasBorrar,
+  confirmar,
 } = require("./helpers/inquirer");
 const Tablero = require("./models/tablero");
 
@@ -50,7 +51,17 @@ const main = async () => {
       case "6":
         //borrar tarea
         const id = await listadoTareasBorrar(TABLERO.tareas);
-        //confirmación para borrar
+        // confirmación para borrar
+        if (id !== "0") {
+          const confirm = await confirmar(
+            "¿Está seguro que desea borrar esta tarea?"
+          );
+          //si el usuario confirma la acción eliminamos la tarea
+          if (confirm) {
+            TABLERO.borrarTarea(id);
+            console.log("Tarea borrada exitosamente");
+          }
+        }
         break;
       case "0":
         break;
