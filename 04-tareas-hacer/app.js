@@ -1,7 +1,12 @@
 require("colors");
 
 const { guardarDb, leerDB } = require("./helpers/guardarArchivo");
-const { inquirerMenu, pausa, leerInput } = require("./helpers/inquirer");
+const {
+  inquirerMenu,
+  pausa,
+  leerInput,
+  listadoTareasBorrar,
+} = require("./helpers/inquirer");
 const Tablero = require("./models/tablero");
 
 console.clear();
@@ -20,7 +25,7 @@ const main = async () => {
   do {
     opt = await inquirerMenu();
 
-    console.log('\n');
+    console.log("\n");
 
     switch (opt) {
       case "1":
@@ -29,17 +34,23 @@ const main = async () => {
         TABLERO.crearTarea(desc);
         break;
       case "2":
+        //mostrar lista de tareas
         TABLERO.mostrarListaDeTareas();
         break;
       case "3":
-        TABLERO.mostrarListaDeTareas('Completadas');
+        //mostrar tareas completadas
+        TABLERO.mostrarListaDeTareas("Completadas");
         break;
       case "4":
-        TABLERO.mostrarListaDeTareas('Pendientes')
+        //mostrar tareas pendientes
+        TABLERO.mostrarListaDeTareas("Pendientes");
         break;
       case "5":
         break;
       case "6":
+        //borrar tarea
+        const id = await listadoTareasBorrar(TABLERO.tareas);
+        //confirmación para borrar
         break;
       case "0":
         break;
