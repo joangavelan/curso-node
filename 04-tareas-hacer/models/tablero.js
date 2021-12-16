@@ -40,6 +40,7 @@ class Tablero {
       ) {
         console.log(
           `${index}. ${tarea.desc} :: ${
+            filtro === 'Completadas' ? (tarea.completadoEn).green :
             tarea.completadoEn ? "Completada".green : "Pendiente".red
           }`
         );
@@ -53,6 +54,21 @@ class Tablero {
       delete this._tareas[id];
     }
   }
+
+  toggleCompletadas = (ids) => {
+    ids.forEach((id) => {
+      const tarea = this._tareas[id];
+      if (!tarea.completadoEn) {
+        tarea.completadoEn = new Date().toISOString();
+      }
+    });
+
+    this.tareas.forEach(tarea => {
+      if(!ids.includes(tarea.id)) {
+        tarea.completadoEn = null;
+      }
+    })
+  };
 }
 
 module.exports = Tablero;
