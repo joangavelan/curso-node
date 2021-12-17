@@ -1,4 +1,9 @@
-const { leerInput, inquirerMenu, pausa } = require("./helpers/inquirer");
+const {
+  leerInput,
+  inquirerMenu,
+  pausa,
+  listarLugares,
+} = require("./helpers/inquirer");
 const Busquedas = require("./models/busquedas");
 require("colors");
 require("dotenv").config();
@@ -14,25 +19,32 @@ const main = async () => {
 
     switch (opt) {
       case 1:
-        //mostrar mensaje
-        const lugar = await leerInput("Ciudad: ");
-        await busquedas.locacion(lugar);
-        //buscar el lugar
-
-        //seleccionar el lugar
-
+        //obtener el termino de busqueda
+        const termino = await leerInput("Locación: ");
+        //buscar lugares por termino
+        const lugares = await busquedas.locacion(termino);
+        //seleccionar el lugar especifico que busca
+        const id = await listarLugares(lugares);
+        if(id === 0) continue;
+        //guardar en db
+        const lugarSeleccionado = lugares.find((l) => l.id === id);
+        busquedas.agregarHistorial(lugarSeleccionado.nombre)
         //clima
-
+        const clima = await busquedas.climaLugar(lugarSeleccionado.latitud, lugarSeleccionado.longitud);
         //mostrar resultados
-        // console.log('\nInformación de la ciudad\n'.green);
-        // console.log('Ciudad', );
-        // console.log('Lat', );
-        // console.log('Lng', );
-        // console.log('Temperatura', '');
-        // console.log('Mínima', '');
-        // console.log('Máxima', '');
+        console.log('\nInformación del lugar\n'.green);
+        console.log('Ciudad:', lugarSeleccionado.nombre);
+        console.log('Latitud:', lugarSeleccionado.latitud);
+        console.log('Longitud:', lugarSeleccionado.longitud);
+        console.log('Temperatura:', clima.temp);
+        console.log('Mínima:', clima.min);
+        console.log('Máxima:', clima.max);
+        console.log('Descripción:', clima.desc);
         break;
       case 2:
+        busquedas.historial.forEach((lugar, index) => {
+          console.log(`${index + 1}. ${lugar}`);
+        })
         break;
     }
 
